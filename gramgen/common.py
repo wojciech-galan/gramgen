@@ -44,6 +44,9 @@ class Node(Base):
     def __str__(self):
         return self.content
 
+    def __hash__(self):
+        return hash(self.content)
+
 
 class BaseProduction(Base):
 
@@ -105,15 +108,15 @@ def listReplaceElement(in_list, from_, to_):
 
 
 def detectTerminals(productions):
-    probably_nonterminals = []
-    pres = []
-    ret_val = []
+    probably_nonterminals = set()
+    pres = set()
+    ret_val = set()
     for p in  productions:
-        probably_nonterminals.extend(p.post)
-        pres.append(p.pre)
-    for probably_nonterminal in set(probably_nonterminals):
+        probably_nonterminals.update(p.post)
+        pres.add(p.pre)
+    for probably_nonterminal in probably_nonterminals:
         if probably_nonterminal not in pres:
-            ret_val.append(probably_nonterminal)
+            ret_val.add(probably_nonterminal)
     return ret_val
 
 

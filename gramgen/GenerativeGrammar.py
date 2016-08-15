@@ -39,11 +39,12 @@ class Production(BaseProduction):
 class Automate(BaseAutomate):
 
     def __init__(self, *productions):
+        assert all(type(production) is Production for production in productions)
         super(Automate, self).__init__(*productions)
 
-    def __call__(self, start, level=2, toString=False):
+    def __call__(self, start, level=2, toString=False, accept_nonterminals=True):
         ret_val = []
-        _produce(start, self.productions, self.terminals, level, ret_val)
+        _produce(start, self.productions, self.terminals, level, ret_val, accept_nonterminals)
         # ret_val = [sentence for sentence in ret_val if all(node not in self.nonterminals for node in sentence)]# TODO temp solution - eliminacja nieterminali. powinno to być robione inaczej
         if toString:
             return '\n'.join(toString.join(str(e) for e in element) for element in ret_val), len(ret_val)
@@ -76,7 +77,7 @@ def _produce(start, productions, terminals, length, res=[], accept_nonterminals=
     if len(start)<=length:
         productions_of_interest = [p for p in productions if p.pre in start]
         for prod_of_interest in productions_of_interest:
-            # result - zdanie utworzone na ponstawie zdania start i produkcji prod_of_interest
+            # result - zdanie utworzone na podstawie zdania start i produkcji prod_of_interest
             result = prod_of_interest(start)
             # TODO do refaktoryzacji!
             if result not in res and len(result) <= length:

@@ -19,3 +19,26 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>"""
+
+import os
+from gramgen.ProdParser import prodParser, readProductions
+from gramgen.RegularGenerativeGrammar import RegularAutomate
+from gramgen.GenerativeGrammar import Automate
+from gramgen.common import Node
+
+if __name__ == '__main__':
+    r_parser = prodParser('RegularProduction')
+    sentence_productions_path = os.path.join(os.path.dirname(__file__), 'example_productions', 'sentence')
+    ra = RegularAutomate(*[r_parser(line) for line in readProductions('#', sentence_productions_path)])
+    sentences, how_much = ra([Node('START')], level=4, toString=' ')
+    print sentences
+    print how_much
+    print '---------------------------------------'
+    sentences, _ = ra([Node('START')], level=4, toString=False)
+    print sentences
+    print '---------------------------------------'
+    parser = prodParser('Production')
+    sentence_productions_details_path = os.path.join(os.path.dirname(__file__), 'example_productions', 'sentence_details')
+    a = Automate(*[parser(line) for line in readProductions('#', sentence_productions_details_path)])
+    sentences, ile = a(sentences[0], level=4, toString=' ', accept_nonterminals=False)
+    print sentences
