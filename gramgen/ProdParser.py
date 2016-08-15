@@ -1,9 +1,6 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 
-#! /usr/bin/python
-# -*- coding: utf-8 -*-
-
     # This file is a part of an library named gramgen
     # If you have any questions and/or comments, don't hesitate to
     # contact me by email wojciech.galan@gmail.com
